@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial—scale=1.0">
+    <link rel="stylesheet" href="css/uikit.min.css" />
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+    <title>UGD Vue Basic 9851</title>
+    <script src="vue.js"></script>
+</head>
+
+<body>
+<div class="view" id="app">
+    <form name="form">
+      <BR></BR>
+      <div class="div" v-if="path == '.'">
+        <center>
+            <div class="uk-card uk-card-default uk-width-1-2@m">
+                <BR></BR>
+                <FONT size="10">🎲 Tebak Angka!</FONT>
+                <p>Tebaklah angka dari 1-10</p>
+                <BR>
+                <INPUT class="uk-input" v-model="guess" TYPE="text" NAME="input" autofocus="autofocus" size="15"></INPUT>
+                <BR></BR>
+                <input class="uk-button uk-button-primary" type="button" @click="checkInput()" value="   Tebak   "/>
+                <BR></BR>
+            </div>
+        </center>
+      </div>
+      <div class="div" v-if="path != '.'">
+        <center>
+            <div class="uk-card uk-card-default uk-width-1-2@m">
+                <BR></BR>
+                <FONT size="10">🎲 Tebak Angka!</FONT>
+                <p>Tebaklah angka dari 1-10</p>
+                <BR>
+                <INPUT disabled class="uk-input" v-model="guess" TYPE="text" NAME="input" size="15"></INPUT>
+                <BR></BR>
+                <input disabled class="uk-button uk-button-primary" type="button" @click="checkInput()" value="   Tebak   "/>
+                <BR></BR>
+            </div>
+          <BR></BR>
+          <div v-if="path == 'wrong'">
+            <FONT size="5" color="Darkslateblue">Tebakan kamu salah!</FONT>
+            <BR></BR>
+            <FONT size="4">Kamu masih punya {{ 3-i }} kesempatan lagi</FONT>
+            <BR></BR>
+            <input class="uk-button uk-button-danger" type="button" @click="enable()" value="   Tebak Lagi   "/>
+          </div>
+          <div class="div" v-if="path == 'victory'">
+            <FONT size="6" color="Green">
+              <B>🎉 Selamat</B></FONT><FONT size="6" color="Darkslateblue">, tebakanmu benar!
+            </FONT>
+            <p>Angka yang benar adalah {{n}}</p>
+            <p>Kamu telah menggunakan {{ i }} kesempatan</p>
+            <BR>
+            <input class="uk-button uk-button-primary" type="button" name="again" value="   Main Lagi  " @click="reload()"/>
+          </div>
+          <div class="div" v-if="path == 'lost'">
+            <font size="6" color="gray">😔 Tebakanmu <font size="6.2" color="Red">salah</font>, jawaban yang benar adalah {{ n }}</font><br/>
+            <BR>
+            <input class="uk-button uk-button-primary" type="button" name="again" value="   Main Lagi  " @click="reload()"/>
+          </div>
+        </center>
+      </div>
+    </form>
+    <div class="uk-position-bottom uk-overlay uk-overlay-default uk-text-center" ALIGN="center">{{nama}} | {{npm}} | {{kelas}}</div>
+  </div>
+</body>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            n: -1,
+            i: 0,
+            path: ".",
+            guess: "",
+            nama: "Nicky Jovanus",
+            npm: "180709851",
+            kelas: "PAW C"
+        },
+        methods: {
+            setRndNumber: function () {
+                do {
+                    this.n = Math.ceil(Math.random() * 10);
+                } while (this.n > 10 || this.n < 1);
+                console.log(this.n);
+            },
+            checkInput: function (input) {
+                if (this.n == -1) {
+                    this.setRndNumber();
+                }
+
+                let num = parseInt(this.guess);
+                this.guess = "";
+                num = Math.ceil(num);
+                if (num >= 1 && num <= 10) {
+                    ++this.i;
+                    if (num == this.n) {
+                    this.path = "victory";
+                    } else {
+                        if (this.i == 3) {
+                            this.path = "lost";
+                        } else {
+                            if (num > this.n || num < this.n) {
+                                this.path = "wrong";
+                            }
+                        }
+                    }
+                    form.reset();
+                } else {
+                    alert("Angka yang dimasukkan harus 1 hingga 10.");
+                    form.reset();
+                }
+            },
+            enable: function(){
+                this.path=".";
+            },
+            reload: function() {
+                this.path = ".";
+                this.setRndNumber();
+                this.i = 0;
+            }     
+        }
+    });
+    app.setRndNumber();
+</script>
+<style>
+    body {
+        background: linear-gradient(103deg, #18161d, #150d2d);
+        min-height: 100vh;
+        color: #ffffff9e;
+    }
+    .uk-input{width: auto; text-align: center;}
+    .uk-position-bottom {
+        background: black;
+    }
+    .uk-card-default {
+        background: #212121;
+        color: #e6e6e6;
+    }
+</style>
+</html>
